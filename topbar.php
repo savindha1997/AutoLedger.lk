@@ -11,7 +11,7 @@
         </ul>
         <div class="d-flex align-items-center ml-auto" style="gap:10px;">
             <form class="form-inline" method="GET" action="view.php" style="margin:0;">
-                <input class="form-control form-control-sm" type="text" name="brn" placeholder="Search BRN" style="width:180px;" required>
+                <input class="form-control form-control-sm" type="text" name="brn" placeholder="Search VRN" style="width:180px;" required>
             </form>
 
             <span style="font-size:14px; color:#4a4a4a; margin-right:2px;">Hi, <?php echo htmlspecialchars($topbarUser); ?></span>
