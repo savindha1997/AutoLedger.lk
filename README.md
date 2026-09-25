@@ -63,16 +63,21 @@ git push
 
 Pushing to the `savindhamac` branch automatically deploys application files to cPanel through GitHub Actions. The workflow keeps the server's `dbconfig.php` and `.env` files intact so production credentials are never committed or overwritten.
 
-In the GitHub repository, open **Settings > Secrets and variables > Actions** and add these repository secrets:
+In the GitHub repository, open **Settings > Secrets and variables > Actions** and configure:
 
-- `CPANEL_HOST`: your cPanel server hostname, such as `server.example.com`
-- `CPANEL_USERNAME`: your cPanel SSH username
-- `CPANEL_DEPLOY_PATH`: absolute web-root path, such as `/home/username/public_html`
-- `CPANEL_SSH_PRIVATE_KEY`: private SSH key for the cPanel account
-- `CPANEL_SSH_KNOWN_HOSTS`: output of `ssh-keyscan -H server.example.com`
-- `CPANEL_SSH_PORT`: optional SSH port; defaults to `22`
+- **Secrets (required):**
+  - `CPANEL_SSH_PRIVATE_KEY`: private SSH key for the cPanel account
+- **Secrets or Variables (required):**
+  - `CPANEL_HOST`: cPanel server hostname (example: `node245.r-sg.register.lk`)
+  - `CPANEL_USERNAME`: cPanel SSH username (example: `autoledg`)
+  - `CPANEL_DEPLOY_PATH`: absolute deploy path (example: `/home/autoledg/public_html`)
+  - `CPANEL_SSH_KNOWN_HOSTS`: output of `ssh-keyscan -H node245.r-sg.register.lk`
+- **Secrets or Variables (optional):**
+  - `CPANEL_SSH_PORT`: SSH port; defaults to `22`
 
 Create an SSH key pair without a passphrase, add its public key in cPanel **SSH Access > Manage SSH Keys**, and authorize it. Store the private key only in the GitHub `CPANEL_SSH_PRIVATE_KEY` secret. Create the production `dbconfig.php` directly in the configured `CPANEL_DEPLOY_PATH` before the first deployment.
+
+The workflow now runs a preflight check and fails early with a clear error if required values are missing.
 
 Use the **Deploy to cPanel** workflow's **Run workflow** button in GitHub to deploy manually when needed.
 
