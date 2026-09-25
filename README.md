@@ -59,6 +59,22 @@ git commit -m "Your message"
 git push
 ```
 
+## Automatic cPanel Deployment
+
+Pushing to the `savindhamac` branch automatically deploys application files to cPanel through GitHub Actions. The workflow keeps the server's `dbconfig.php` and `.env` files intact so production credentials are never committed or overwritten.
+
+In the GitHub repository, open **Settings > Secrets and variables > Actions** and add these repository secrets:
+
+- `CPANEL_HOST`: your cPanel server hostname, such as `server.example.com`
+- `CPANEL_USERNAME`: your cPanel SSH username
+- `CPANEL_DEPLOY_PATH`: absolute web-root path, such as `/home/username/public_html`
+- `CPANEL_SSH_PRIVATE_KEY`: private SSH key for the cPanel account
+- `CPANEL_SSH_KNOWN_HOSTS`: output of `ssh-keyscan -H server.example.com`
+
+Create an SSH key pair without a passphrase, add its public key in cPanel **SSH Access > Manage SSH Keys**, and authorize it. Store the private key only in the GitHub `CPANEL_SSH_PRIVATE_KEY` secret. Create the production `dbconfig.php` directly in the configured `CPANEL_DEPLOY_PATH` before the first deployment.
+
+Use the **Deploy to cPanel** workflow's **Run workflow** button in GitHub to deploy manually when needed.
+
 ## Notes
 
 - If schema changes are made (for example, lease-related columns), keep SQL schema and PHP pages in sync.
