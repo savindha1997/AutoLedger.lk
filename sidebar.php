@@ -115,6 +115,13 @@ function sideActive($pages, $currentPage)
                   <span class="hide-menu">Other Expencess</span>
                   </a>
               </li>
+
+              <li class="side-bar-item <?php echo sideActive(['system_logs.php'], $currentPage); ?> mt-3">
+                  <a class="side-bar-link <?php echo sideActive(['system_logs.php'], $currentPage); ?>" href="system_logs.php">
+                  <span><i class="ri-file-list-3-line"></i></span>
+                  <span class="hide-menu">System Logs</span>
+                  </a>
+              </li>
             
 
           
