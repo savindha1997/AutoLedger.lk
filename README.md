@@ -70,6 +70,7 @@ In the GitHub repository, open **Settings > Secrets and variables > Actions** an
 - `CPANEL_DEPLOY_PATH`: absolute web-root path, such as `/home/username/public_html`
 - `CPANEL_SSH_PRIVATE_KEY`: private SSH key for the cPanel account
 - `CPANEL_SSH_KNOWN_HOSTS`: output of `ssh-keyscan -H server.example.com`
+- `CPANEL_SSH_PORT`: optional SSH port; defaults to `22`
 
 Create an SSH key pair without a passphrase, add its public key in cPanel **SSH Access > Manage SSH Keys**, and authorize it. Store the private key only in the GitHub `CPANEL_SSH_PRIVATE_KEY` secret. Create the production `dbconfig.php` directly in the configured `CPANEL_DEPLOY_PATH` before the first deployment.
 
