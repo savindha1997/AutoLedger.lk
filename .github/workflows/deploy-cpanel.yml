@@ -13,12 +13,45 @@ concurrency:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
 
     steps:
       - name: Check out source
         uses: actions/checkout@v4
 
+      - name: Validate deployment configuration
+        id: deploy_config
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.CPANEL_SSH_PRIVATE_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.CPANEL_SSH_KNOWN_HOSTS }}
+          CPANEL_HOST: ${{ secrets.CPANEL_HOST }}
+          CPANEL_USERNAME: ${{ secrets.CPANEL_USERNAME }}
+          CPANEL_DEPLOY_PATH: ${{ secrets.CPANEL_DEPLOY_PATH }}
+        run: |
+          missing=0
+
+          for var_name in \
+            SSH_PRIVATE_KEY \
+            SSH_KNOWN_HOSTS \
+            CPANEL_HOST \
+            CPANEL_USERNAME \
+            CPANEL_DEPLOY_PATH
+          do
+            if [ -z "${!var_name}" ]; then
+              echo "::notice::Skipping cPanel deploy because $var_name is not configured."
+              missing=1
+            fi
+          done
+
+          if [ "$missing" -eq 0 ]; then
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Configure SSH
+        if: steps.deploy_config.outputs.ready == 'true'
         env:
           SSH_PRIVATE_KEY: ${{ secrets.CPANEL_SSH_PRIVATE_KEY }}
           SSH_KNOWN_HOSTS: ${{ secrets.CPANEL_SSH_KNOWN_HOSTS }}
@@ -30,6 +63,7 @@ jobs:
           chmod 600 ~/.ssh/known_hosts
 
       - name: Deploy application files
+        if: steps.deploy_config.outputs.ready == 'true'
         env:
           CPANEL_HOST: ${{ secrets.CPANEL_HOST }}
           CPANEL_USERNAME: ${{ secrets.CPANEL_USERNAME }}
