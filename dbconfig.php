@@ -18,7 +18,7 @@
         ]);
     }
 
-    $con = mysqli_connect("localhost", "autoledg_demoshop_user", "WbU6[8ccq#Gx,Y[e", "autoledg_demoshop" );
+    $con = mysqli_connect("localhost", "root", "", "AutoLedger");
     if($con == false){
         die("Connection Error". mysqli_connect_error());
     }
