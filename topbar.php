@@ -1,11 +1,21 @@
 <section>
 
-    <?php $topbarUser = isset($_SESSION['user_name']) ? $_SESSION['user_name'] : 'User'; ?>
+    <?php
+    $topbarUser = isset($_SESSION['user_name']) ? $_SESSION['user_name'] : 'User';
+    $businessName = 'Demo Auto Sale';
+    $businessInfoQuery = @mysqli_query($con, "SELECT b_name FROM business_info LIMIT 1");
+    if ($businessInfoQuery && mysqli_num_rows($businessInfoQuery) > 0) {
+        $businessInfo = mysqli_fetch_assoc($businessInfoQuery);
+        if (!empty($businessInfo['b_name'])) {
+            $businessName = $businessInfo['b_name'];
+        }
+    }
+    ?>
 
     <nav class="navbar navbar-expand-lg fixed-top top-bar">
     
     <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-        <img src="AutoLedger.png" alt="Kalhara Auto House Logo" class="login-brand-logo-t-b"> <a class="navbar-brand name-id" href="#">Demo Auto Sale</a>
+        <img src="AutoLedger.png" alt="<?php echo htmlspecialchars($businessName); ?> Logo" class="login-brand-logo-t-b"> <a class="navbar-brand name-id" href="#"><?php echo htmlspecialchars($businessName); ?></a>
         <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
         
         </ul>

@@ -18,6 +18,29 @@ if (!$query || mysqli_num_rows($query) === 0) {
 
 $row = mysqli_fetch_assoc($query);
 
+$businessName = 'Demo Auto Sale';
+$businessAddress = '6th Mile Post, Koswathumanana, Karandeniya';
+$businessPhone = '077-6434861';
+$businessInfoQuery = @mysqli_query($con, "SELECT * FROM business_info LIMIT 1");
+if ($businessInfoQuery && mysqli_num_rows($businessInfoQuery) > 0) {
+    $businessInfo = mysqli_fetch_assoc($businessInfoQuery);
+    if (!empty($businessInfo['b_name'])) {
+        $businessName = $businessInfo['b_name'];
+    }
+    foreach (['b_address', 'address', 'business_address'] as $column) {
+        if (!empty($businessInfo[$column])) {
+            $businessAddress = $businessInfo[$column];
+            break;
+        }
+    }
+    foreach (['b_phone', 'phone', 'phone_number', 'business_phone'] as $column) {
+        if (!empty($businessInfo[$column])) {
+            $businessPhone = $businessInfo[$column];
+            break;
+        }
+    }
+}
+
 function pdfEscape($text) {
     $text = str_replace('\\', '\\\\', $text);
     $text = str_replace('(', '\\(', $text);
@@ -66,9 +89,9 @@ $vehicleEngine = $row['engine_number'] ?: 'N/A';
 $vehicleBrn = $row['brn'] ?: 'N/A';
 
 $layout = [
-    ['font' => 'F2', 'size' => 18, 'text' => 'KALHARA AUTO HOUSE', 'spacing' => 22],
-    ['font' => 'F1', 'size' => 10, 'text' => '6th Mile Post, Koswathumanana, Karandeniya', 'spacing' => 16],
-    ['font' => 'F1', 'size' => 10, 'text' => 'Phone: 077-6434861', 'spacing' => 32],
+    ['font' => 'F2', 'size' => 18, 'text' => $businessName, 'spacing' => 22],
+    ['font' => 'F1', 'size' => 10, 'text' => $businessAddress, 'spacing' => 16],
+    ['font' => 'F1', 'size' => 10, 'text' => 'Phone: ' . $businessPhone, 'spacing' => 32],
     ['font' => 'F2', 'size' => 14, 'text' => 'VEHICLE PURCHASE INVOICE', 'spacing' => 24],
     ['font' => 'F1', 'size' => 11, 'text' => 'Date: ' . $invoiceDate, 'spacing' => 18],
     ['font' => 'F1', 'size' => 11, 'text' => 'Reference ID: ' . $referenceId, 'spacing' => 28],
@@ -85,7 +108,7 @@ $layout = [
     ['font' => 'F2', 'size' => 12, 'text' => '3. Financial Summary', 'spacing' => 18],
     ['font' => 'F1', 'size' => 11, 'text' => 'Agreed Purchase Price: ' . $purchasePrice, 'spacing' => 28],
     ['font' => 'F2', 'size' => 12, 'text' => '4. Declaration & Acknowledgement', 'spacing' => 18],
-    ['font' => 'F1', 'size' => 11, 'text' => 'This invoice confirms the purchase of the vehicle specified above by Kalhara Auto House from the seller.', 'spacing' => 18],
+    ['font' => 'F1', 'size' => 11, 'text' => 'This invoice confirms the purchase of the vehicle specified above by ' . $businessName . ' from the seller.', 'spacing' => 18],
     ['font' => 'F1', 'size' => 11, 'text' => '- The buyer confirms that all necessary ownership documents, registration files, and legal records have been verified.', 'spacing' => 16],
     ['font' => 'F1', 'size' => 11, 'text' => '- The buyer confirms that the vehicle condition has been inspected and accepted.', 'spacing' => 16],
     ['font' => 'F1', 'size' => 11, 'text' => '- Both the buyer and the seller agree to the terms of this transaction without any objection or hesitation.', 'spacing' => 16],
