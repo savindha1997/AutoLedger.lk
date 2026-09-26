@@ -3,6 +3,8 @@ name: Deploy to cPanel
 on:
   push:
     branches:
+      - main
+      - master
       - savindhamac
   workflow_dispatch:
 
