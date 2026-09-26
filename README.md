@@ -38,11 +38,15 @@ VSFMS is a PHP + MySQL based vehicle finance and sales management system.
 3. Create database (default expected name):
    - `vsfms`
 4. Import your SQL dump(s) into `vsfms` (including required tables like `bykes`, `bykesale`, `system_logs`, etc.).
-5. Update DB config if needed in `dbconfig.php`:
+5. `dbconfig.php` defaults to a local XAMPP setup out of the box:
    - host: `localhost`
    - user: `root`
-   - password: ``
+   - password: `` (empty)
    - database: `vsfms`
+
+   To use different credentials (for example in production), set the
+   `DB_HOST`, `DB_USER`, `DB_PASS`, and `DB_NAME` environment variables
+   instead of editing `dbconfig.php` directly.
 6. Open in browser:
    - `http://localhost/vsfms/login.php`
 

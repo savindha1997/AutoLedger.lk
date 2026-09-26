@@ -18,7 +18,15 @@
         ]);
     }
 
-    $con = mysqli_connect("localhost", "autoledg_demoshop_user", "WbU6[8ccq#Gx,Y[e", "autoledg_demoshop" );
+    // Database credentials are read from environment variables so the same
+    // codebase can run both on a local XAMPP install and in production.
+    // Sensible defaults are provided for a fresh local (XAMPP) setup.
+    $dbHost = getenv('DB_HOST') ?: 'localhost';
+    $dbUser = getenv('DB_USER') ?: 'root';
+    $dbPass = getenv('DB_PASS') ?: '';
+    $dbName = getenv('DB_NAME') ?: 'vsfms';
+
+    $con = mysqli_connect($dbHost, $dbUser, $dbPass, $dbName);
     if($con == false){
         die("Connection Error". mysqli_connect_error());
     }
